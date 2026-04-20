@@ -1,0 +1,32 @@
+WMI (Windows Management Instrumentation)
+Q: what is WMI?
+
+Ans: WMI is a set of extentions to the windows driver model which provides an operating
+system interface through which instrumented components can provide information and
+notification.
+WMI is microsoft's implementation of WBEM (Web Based Enterprise Management) and CIM
+(Common Information Model) from the standards from the DMTF (Distributed Management Task
+Force)
+
+Q What is the purpose of WMI
+
+The Purpose of WMI is to define a proprietary set of environment-independent specification
+which allows management information to be shared between management applications.
+Uses of WMI:
+i) Hardware & Software inventory: WMI helps gather information about installed hardware
+components (such as CPU, memory, Disk, etc) and software application.
+ii) System Configuration: You can use WMI to query & configure system settings, security
+policies, permissions & other parameters.
+iii) Event Monitoring: WMI enables event-based monitoring, you can receive alerts when
+specific event occurs, eg: (System Startup, logon, disk space threshold, etc.)
+iv) Performance Monitoring: WMI provides performance counters and metrics for monitoring
+system performance (CPU usage, memory utilization, network activity, etc.)
+v) Registry files System data: WMI allows access to registry keys, values, and file system
+information.
+vi) Custom Management application: Developers can create custom management application
+using WMI to automate tasks perform diagnostics and manage resources.
+
+Note: WMI -> it is implemented as a service process within a shared service host (svchost). The
+name of WMI service is Winmgmt. Depending on the setup, WMI Service may shut down or go
+into low memory profile when no management application is being called by a management
+application.
