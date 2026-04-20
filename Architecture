@@ -1,0 +1,53 @@
+Management Apps:
+
+Database App.
+<-> ODBC
+Web browser <-> ActiveX Controls
+C/C++ APPS
+(All connect to) -> WINDOWS MANAGEMENT API
+COM / DCOM Interface
+
+WMI infrastructure:
+
+CIM repository <-> CIM Object Manager (CIMOM)
+
+Providers:
+SNMP Provider -> SNMP objects
+Win32 Provider -> Win32 objects
+Registry Provider -> Registry objects
+
+
+WINMGMT -> Starts when the first management application or script makes a call to
+connect to a WMI namespace.
+
+WMI Consumers: WMI consumers and management applications, or scripts, interact with WMI
+infrastructure by calling the WMI API (COM / DCOM). They can perform: i) querying ii)
+enumerating data iii) Running provider methods etc.
+
+WMI Infrastructure:
+WMIPRVSE.EXE -> This is the provider host for WMI
+WMI Infrastructure: It consists of various components.
+1. WMI Core (CIM Object Manager): It is component of WBEM system, it manages CIM
+objects, facilitates interaction between WBEM Client Applications; Manages CIM
+repository; Performs security checks to authenticate users for WBEM Clients.
+2. WMI Repository (CIM Repository): It is a language independent database of the
+namespace, classes, objects instances within an enterprise environment, which are
+stored in a static form.
+
+3. COM (Component Object Model): It is a platform independent, distributed,
+object-oriented system that creates a binary software components which can interact.
+4. DCOM (Distributed Component Object Model): It is extension of COM, which helps
+locate or interact with components/objects located on a different system, remote
+computer or even on the internet.
+
+
+Svchost.exe -> It is implemented as a service process within a shared service host
+which can contain the WMI service (winmgmt)
+
+
+WMI Provider:WMI Providers are intermediary between WMI Service & objects. WMI Providers starts as
+a service name. WMIPRVSE.exe whenever a query is made.
+This acts as a container and provides the requested information to the application/query.
+Each time a query is made from a different source, a separate service is started as WMIPRVSE.
+The default startup type of WMI service is Automatic.
+WMI service depends on RPC.
