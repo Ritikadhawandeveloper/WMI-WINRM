@@ -1,0 +1,220 @@
+What is WINRM ?
+
+WinRM is  one component of windows hardware management feature that manages server hardware locally or remotely.
+
+This feature includes a service that impthe WS_man , hardware diagnose and control through baseboard mangagement service (BMC) and a COM api and scripting objects that allows you to write applications that communicate remotely through the windows management or WS_MAN protocol.
+
+Windows Remote Management or WinRM is microsoft implemetaTION OF WS-man protocol.
+
+WinRM provides a secure ,efficient way for management applications to communicate with local or remote computers 
+
+Winrm service is used for this .
+
+When a server is connected to a BMC that support the WS_MAN standards, appliactions and scripts can use WinRM to communicate directly with BMC ,even when the operating system is offline .
+
+What is WS amangement Protocol ?
+
+Ws management protocol is a SOAP based firewall friendly protocol designed for systems to locate and exchange management information .
+
+Port 5985 (HTTP) is used for domain joined system which are on same network 
+
+Port 5986 (HTTPS) is used for domain joined system which are on different network .
+
+WSman protocol is based on the following standard specification :
+
+HTTPS
+
+SOAP over http
+
+soap 1.2
+
+ws-addressing
+
+ws-transfer
+ws-enumeration
+ws-eventing 
+
+List of components and features that are supplied by WINRM and hardware monitoring ?
+
+WinRM Scripting API: This scripting API enables you to obtain data from remote
+computers using scripts that perform WS-management protocol operations. WinRM
+scripting objects are implemented as a layer above the WS-management protocol.
+The scripting objects enable you to obtain data or manage resources on a local or
+remote computer.
+
+Winrm.cmd This command line tool for system management is implemented in a Visual
+Basic scripting edition file (winrm.vbs) written using the WinRM scripting API. This tool
+enables administrators to configure WinRM and to get data or manage resources.
+
+WinRS.exe This command line tool enables administrators to remotely execute most
+cmd.exe using the WS-management protocol.
+
+What is WINRM listner ?
+
+It is a management service that implements a WS-management protocol to send and
+receive messages.
+
+WinRM is a listener service.
+
+A listener is defined by a transport (HTTP/HTTPS) and an IPv4 or IPv6 address.
+
+You can create more than one WinRM listener instance on a single computer by giving
+them a different TCP-IP address or port number.
+
+Authentication for WinRM Remote Connections
+
+WinRM maintains security for communication between computers by supporting several
+standard methods of authentication and message encryption.
+
+Default group access: During setup, WinRM creates a local group (Remote
+Management Users). WinRM then restricts remote access to any users who are not a
+member of either the local administrators group or the remote management users group.
+You can add local/domain users or domain groups to the Remote Management Users
+group.
+
+(Types of Security Standards used by WinRM)
+
+Kerberos: It is the default method of authentication when the client is in a domain.
+Negotiate: It is the default method of authentication when the client is not in a domain.
+
+If you specify Negotiate, Digest, or Basic authentication and fail to supply a
+connection option object, then you will receive an error indicating that explicit
+credentials are required.
+
+If HTTPS is not the transport, then the target remote computer must be
+configured in the list of TrustedHost computer.
+
+Basic Authentication: It is disabled in the default configuration setting for both WinRM
+Client and WinRM Server.
+UAC Affects access to the WinRM Service: When Negotiate or authentication is used
+in a workgroup, only the built-in administrator account can access the service.
+
+To allow all accounts in the administrators group to access this service (WinRM),
+set the following registry value:
+HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System
+
+LocalAccountTokenFilterPolicy = 1
+IP address cannot be used when Kerberos method is used for authentication.
+
+Client certificate:
+
+You must first enable the use of client certificate authentication on both the client
+and the service by using the winrm.cmd tool.
+
+You must also create an entry in the cert mapping table on the WinRM Server
+computer. This establishes a mapping between one or more certificates and a
+local account.
+
+Once the certificate is used for authentication and authorization, the
+corresponding local account is used for operations performed by the WinRM
+Service.
+
+Maximum size of certificate usable by WinRM is 16KB.
+
+
+BMC?
+
+It is a specialized microcontroller embedded in a computer's motherboard which acts as the
+brain of the system's monitoring, remote management, and other auxiliary functions, making it
+an integral component for server management.
+Event forwarding, PowerShell remoting, and WinRS depend on WinRM.
+Event viewer path: c:\windows\system32\winevt
+
+
+Common Command :
+
+To set defsult winrm settings : winrm quick config 
+
+WinRM listner : Winrm e winrm/config/listner
+
+Winrm set winrm/config/client/auth@{Digest="False"}
+
+Winrm get winrm/config
+
+Winrm e winrm/config/listner-r:(computername)
+
+Winrs-r:(Computername) Hostname 
+
+
+What is MMC?
+
+MMC is a windows utility which provides a unified interface to the System Admin and
+advanced user to configure and manage system/computers.
+MMC hosts administrative tools aka snap-ins to display different components of windows
+settings.
+MMC could also be utilised to manage and can configure remote computers using
+WS-Management Protocol.
+Q: What is the service name for MMC.
+mmc.exe.
+
+Snap-ins: MMC itself does not perform administrative functions; it acts as a container for snap-ins that do.
+
+Customization: Users can create tailored consoles using mmc.exe and adding specific snap-ins through the File menu.
+
+Remote Management: Snap-ins can be configured to manage other computers on a network.
+
+Event forwarding 
+
+
+-> WinRM supports event forwarding, allowing you to collect and forward events from remote
+computers to a central location.
+There are two types of event forwarding:
+1. Collector initiated (Pull)
+2. Source initiated (Push)
+
+
+There are two types of event forwarding:
+
+Collector Initiated Pull
+
+Source Initiated Push
+
+i) Collector Initiated Pull:
+
+With the collector initiated subscription the collector will have to establish outbound WinRM connection & Pull events from the clients.
+
+ii) Source Initiated Push:
+
+With the source initiated subscription the collector will wait for incoming connection from the clients.
+
+Common Requirements for Event forwarding:
+
+A subscription has to be made on the collector server to forward events.
+
+The WinRM has to be enabled on both client & server (collector server).
+
+The WinRM service is already by default enabled in server but in client we have to enable it manually.
+
+The account used to create the subscription need to have the permissions to read the event logs of the source computers. This permission can be configured using the built-in group called event log reader.
+
+Requirement of collector initiated event forwarding:
+
+The client has to reachable over the network & a firewall rule needs to be configured to adapt the incoming traffic.
+
+The collector will have to contact each clients to pull the events for this reason this solution is not scalable & should not be preferred option.
+
+Requirement of Source Initiated:
+
+The collector has to reachable by the clients.
+
+A policy has to be deployed to the client to point them to the collector.
+
+Note:
+
+Wecsvc $\rightarrow$ Service name
+
+Windows event collector $\rightarrow$ Display name
+
+Windows Event log forwarding is a feature that was introduced in windows server 2008.
+
+Wecutil.exe: Windows event collector utility that enables an admin to create & manage subscriptions to events forwarded from remote event sources that support WS-man protocol, commands & options and often values are case-insensitive for this utility.
+
+Note:
+
+If you receive a message that says "The RPC server is unavailable" or "The interface is unknown" when you try to run wecutil, then you need to start the windows event collector service (wecsvc). To start wecsvc, at an elevated command prompt type net start wecsvc.
+
+
+
+
+
+WS_MANGEM
