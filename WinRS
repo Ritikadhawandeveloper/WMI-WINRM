@@ -1,0 +1,3 @@
+WinRS (Windows Remote Shell) is a command-line tool built into Windows that enables systems administrators to securely execute commands, scripts, or programs on remote Windows computers. It functions as the command-line client for Windows Remote Management (WinRM) Microsoft's implementation of the WS-Management (Web Services for Management) protocol.
+
+While WMI (Windows Management Instrumentation) acts as the data provider—supplying information about system resources—WinRS acts as the transport mechanism to interact with that data remotely,
