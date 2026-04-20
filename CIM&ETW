@@ -1,0 +1,32 @@
+What is CIM?
+
+CIM (Common information model) is an extensible, object oriented datamodel which contains Information about different parts often of an enterprise it is a Cross-platform standard maintained by DMTF.
+
+Through WMI, developers can use the CIM to create classes that represents various entities such as harddisk drives, applications network routers etc.
+
+CIM has Three levels of classes:
+
+Core: Core classes represents managed objects that apply to all aries of management
+
+Common: Common classes represent managed objects that apply to specific areas of management.
+
+Extended: Extended class represent Managed object that are technology-specific edition to the common classes.
+
+
+
+What is ETW?
+
+How WMI uses Event Tracing
+
+WMI uses event tracing to record WMI service activity.
+
+Event notification support
+
+Query language support
+
+Security support
+
+Scripting access to performance counter data.
+
+Note: The command line tool wevtutil (written as wevutil) is used to enable WMI event tracing to locate WMI events.
+
