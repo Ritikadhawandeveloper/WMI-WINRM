@@ -1,0 +1,184 @@
+Requirement to add forward security logs to a Windows event collector server:
+
+Add network service to the BUILTIN\Event Log Readers group on each source computer. This can be easily achieved via Group policy Reference.
+
+Group policy object to configure "Target subscription Manager" was enabled in "Default Domain Controllers Policy".
+
+Add "Network Service" SID to security log channel Access via command line.
+
+Run command wevtutil get-log security to get current channel access for security log in Domain controlled servers.
+
+Copy channel access value.
+
+Run command wevtutil set-log security /ca: <Paste-Here-Channel-Access>(A;;0x1;;;S-1-5-20) to include Network Service SID to the security log channel access.
+
+Run command wevtutil get-log security to confirm that network service SID was added successfully.
+
+once this has been done, WinRM service must be restarted on both Domain controller & WEC servers.
+
+After restarting the service, Domain controller security logs should start being forwarded to the collector server. This works on both source initiated and collector initiated subscription.
+
+
+Here are the transcribed notes from the provided images, exactly as they are written:
+
+What is service for MMC?
+
+MMC.exe
+
+What is Task Scheduler?
+
+The Task Scheduler service allows you to perform automated tasks on a chosen computer. With this service, you can schedule any program or document to run at a time that is convenient for you.
+
+When a specific event occurs.
+
+It monitors the time or event criteria you choose and then executes the task when those criteria are met.
+
+It is implemented and was first introduced in the Microsoft Plus for Windows 95 as System Agent.
+
+Task scheduler is automatically installed on Windows OS, and is started each time the operating system is started. It can run through the Task scheduler graphical user interface (GUI) or by using command line.
+
+By default, you must be a member of the Administrators, Backup operators, or server operators group on the local computer to view, add, edit, or delete scheduled tasks, or to disable, pause, or restart the Task Scheduler service.
+
+Function of Task Scheduler
+
+Schedule a task to run daily, weekly, monthly, or at certain times. (such as system startup).
+
+Change the scheduler for a task.
+
+Stop a scheduled task.
+
+Customize how a task runs at a scheduled time.
+
+Components of Task Scheduler
+
+The Task Scheduler service is comprised of the following components:
+
+Mstask.dll: Task scheduler interface DLL
+
+Mstask.exe: Task scheduler engine (Windows 2000 only).
+
+Schedsvc.dll: Task scheduler Engine (Windows XP 2003)
+
+Mstinit.exe: Task scheduler help
+
+Components of a Task
+
+Triggers: Task scheduler uses event or time based triggers to know when to start a task. Every task can specify one or more triggers to start the task.
+
+Actions: These are the actions, the actual work, that is performed by the task. Every task can specify oneor more actions to complete work.
+
+Principals: Principals define the security context in which the task is run. For eg, a principal might define a specific user or user group that can run the task.
+
+Settings: These are the settings that the Task Scheduler uses to run the task with respect to conditions that are external to the task itself.
+
+Note: By default, a task will be stopped 72 hours after it starts to run. You can change this by changing the Execution Time Limit setting.
+
+Registration Information: This is administrative information that is gathered when the task is registered. Example: the author of the task, the date when the task registered, XML description of the task.
+
+Data: This is additional documentation about the task that is supplied by the author of the task.
+
+Types of Triggers
+
+Time-based Triggers: Time-based triggers start tasks at specified times. This includes starting the task once at a specific time or starting the task multiple times on a daily, weekly, monthly or monthly day of week schedule.
+
+Event-based Triggers: It starts a task in response to certain system events.
+
+Multiple Triggers:
+
+Note: Tasks are registered and run under a specific security context. User can create applications that successfully register, update, delete or run tasks, but the user must supply the correct credentials when a task is registered and the application must be running in a process with the correct privileges.
+
+Note: By default, a user who creates a task can read, update, delete, and run the task. A user must have write, read, delete permission & execute permission on a task to update, read, delete and run the task respectfully.
+
+MSI Overview
+
+The MSI (Microsoft installer) is a software installation and configuration tool developed by Microsoft. It is used to Package, distribute, and deploy software on Windows OS.
+
+Features of MSI
+
+Transactional installation: MSI packages support a transactional installation process, which ensures that the installation completes successfully or rollback to the original state if an error occurs.
+
+Customizable installation: MSI packages can customized to suit the specific needs of an organization or end user. This include options for silent installation, custom dialogs, and custom occurs.
+
+Self-healing: MSI packages can detect and repair missing or corrupted files and registry keys, ensuring that the software is always in a consistent state.
+
+Patch Management: MSI Packages support patch management allowing software to be easily updated without requiring a complete new installation.
+
+Application Management: MSI Packages can be used to manage software on a Windows system, including installing, configuring & removing software.
+
+Service name: MSIServer
+
+Display name: Windows Installer
+
+Executable file: MSIEXEC.exe
+
+Path: C:\windows\system32\msiexec.exe
+
+Types of extension of files support by window installer
+
+.msi — Windows installer Database.
+
+.msm — Windows Installer Merge Module.
+
+.msp — Windows Installer Patch
+
+.mst — Windows Installer Transform
+
+The executable program that interprets packages & installer products is msiexec.exe.
+
+What is MSI, MSI installer, MSI Package
+
+Difference between MSI and EXE
+
+What is the Requirement of MSI Package?
+
+Certificate (.PFX)
+
+MSI depends on RPC service.
+
+Group policies MSI
+
+User Policies
+
+HKEY_CURRENT_USER\Software\Policies\Microsoft\windows\installer
+
+Computer Policies
+
+HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\windows\installer
+
+What is Windows installer?
+
+Windows Installer is an installation & configuration service provided with windows that enables administrators to provide better corporate deployment.
+
+It enables efficient installation & configuration of softwares
+
+What is MSI Package?
+
+MSI Package is a file format used by windows for the installation, maintenance & removal of software. It supports the file extensions such as .msi, .msix, .msp etc.
+
+What is difference between .msi & .msix?
+
+.msi is a file extension for a packaging format used for the distribution & installation of software on Windows.
+
+.msix is also a Windows app package format which provides a modern packaging experience to all Windows apps.
+
+Using .msix one can create custom package with preconfigured settings for installation requirements so that it can be deployed in a much efficient way by.
+
+
+
+
+Windows Event Viewer is a built-in Microsoft management tool that provides detailed logs about significant events, errors, and warnings occurring on a computer. It acts as a crucial diagnostic tool for troubleshooting system performance and security issues by recording logs in categories like Application, Security, Setup, and System. 
+
+Key Event Types & Logs in Event Viewer
+Windows Logs:
+Application Log: Records events related to installed applications, such as software crashes or errors.
+Security Log: Tracks security events, including successful/failed login attempts, privilege usage, and resource access.
+System Log: Captures events from Windows system components and drivers, such as driver failures or unexpected shutdowns.
+Setup Log: Records events relating to application installation and Windows OS updates.
+Forwarded Events: Stores events collected from other remote computers on the network. 
+
+Event Severity Levels:
+Critical: Significant failures, such as system failure or data loss, requiring immediate attention.
+Error: Serious issues where a service or application has failed to complete a task.
+Warning: Issues that are not immediately critical but may indicate future potential problems.
+Information: Logs successful operations, such as services starting or applications functioning correctly.
+Verbose: Highly detailed tracking info for deep troubleshooting.
