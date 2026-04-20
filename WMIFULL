@@ -29,7 +29,130 @@ using WMI to automate tasks perform diagnostics and manage resources.
 Note: WMI -> it is implemented as a service process within a shared service host (svchost). The
 name of WMI service is Winmgmt. Depending on the setup, WMI Service may shut down or go
 into low memory profile when no management application is being called by a management
-
-
-
 application.
+
+WMI Architecture
+
+Management Apps:
+
+Database App.
+<-> ODBC
+Web browser <-> ActiveX Controls
+C/C++ APPS
+(All connect to) -> WINDOWS MANAGEMENT API
+COM / DCOM Interface
+
+WMI infrastructure:
+
+CIM repository <-> CIM Object Manager (CIMOM)
+
+Providers:
+SNMP Provider -> SNMP objects
+Win32 Provider -> Win32 objects
+Registry Provider -> Registry objects
+
+
+WINMGMT -> Starts when the first management application or script makes a call to
+connect to a WMI namespace.
+
+WMI Consumers: WMI consumers and management applications, or scripts, interact with WMI
+infrastructure by calling the WMI API (COM / DCOM). They can perform: i) querying ii)
+enumerating data iii) Running provider methods etc.
+
+WMI Infrastructure:
+WMIPRVSE.EXE -> This is the provider host for WMI
+WMI Infrastructure: It consists of various components.
+1. WMI Core (CIM Object Manager): It is component of WBEM system, it manages CIM
+objects, facilitates interaction between WBEM Client Applications; Manages CIM
+repository; Performs security checks to authenticate users for WBEM Clients.
+2. WMI Repository (CIM Repository): It is a language independent database of the
+namespace, classes, objects instances within an enterprise environment, which are
+stored in a static form.
+
+3. COM (Component Object Model): It is a platform independent, distributed,
+object-oriented system that creates a binary software components which can interact.
+4. DCOM (Distributed Component Object Model): It is extension of COM, which helps
+locate or interact with components/objects located on a different system, remote
+computer or even on the internet.
+
+
+Svchost.exe -> It is implemented as a service process within a shared service host
+which can contain the WMI service (winmgmt)
+
+
+WMI Provider:WMI Providers are intermediary between WMI Service & objects. WMI Providers starts as
+a service name. WMIPRVSE.exe whenever a query is made.
+This acts as a container and provides the requested information to the application/query.
+Each time a query is made from a different source, a separate service is started as WMIPRVSE.
+The default startup type of WMI service is Automatic.
+WMI service depends on RPC.
+
+Difference COM/DCOM
+
+Com is a platform-independent, distributed, object-oriented system to create software
+components in a binary standard which can interact.
+
+COM basically functions as a translator and translates to binary standard.
+
+Com defines how objects work over a distributed environment.
+
+COM promotes reuse of software components from different vendors. A COM
+application usually consists of an executable file and additional components such as dll
+files.
+
+Using COM differnt components interlocate locally with other components 
+
+
+Dcom
+
+It is an extension to COM . It allows access to software components or objects located on a differnt computer It is used to exchange information between remote computer or a  system located in lan or wan or even on internet.
+
+restricted activation and restricted access are  by deafult given to administartors and are disabled for standard users
+
+DCOM Has four aspects of security :
+
+1. Acess security
+2.Launch Security
+3. Identify
+4. Connectionpolicy
+
+Namespace 
+
+It is a programming object that defines the scope for a set of clases and instances .It is essentially a container or enviroment where WMI provider classers are defined and  managed. Namespaces are used to organise classes that represents differnt managed environment. Provies a hierarchical organisation  of classes.
+
+A Namespace organizes information similar to folders in a filesystem. The top “folder” of the WMI namespace is always called “root”.
+
+Default namespace : Root/Default
+
+Root/CIMv2
+
+
+WMI arbitartor 
+
+WMI arbitrator is a component of WMI servivce that manages scheduling and execution of tasks received from WMI client process 
+
+It resides in the WMISVChost.exe and is implemented as the following static singleton instance : Wbemcore! cwmiarbitrator ::m_Parb
+
+The arbitartor track queries and incoming client requests as tasks of object type : Wbemcore!cwmittask().
+
+Examples of some information tracked for these tasks include Client process id , Clilent computername , Last client activity, WQL text query  , Task submission etc.
+
+Results returned by executing these tasks retrieved from WMI provider processes, are held directly in WINMGMT SVChost.exe heap memory until retrived by clients .
+
+If the client does not spcify WBEM_FLAG_FORWARD_ONLY to indiacte a non rewindable or single direction enumerator , then the complete result set will reamin in WINMGMT heap memory for 20 minutes .
+
+Event IP 5858 : WMI_Activity/Operational
+
+Generated for cancellation of idle task.
+
+* The 20 minutes max idle timeout can be overidden by the following DWORD registry value : HKLM\SOFTWARE\MICROSOFT\WBEM\CIMOM\Arbtask MaxIdle(Default = on 1200000ms)
+
+
+WMI throttling 
+
+WMI Arbitrator throttling is a forced thread sleep state that occurs when the total amount of tracked task memory (m_utotal Memoryusage) reaches the throttling limit (m_uSystemhigh)which defaults to 256MB.
+
+
+
+
+
